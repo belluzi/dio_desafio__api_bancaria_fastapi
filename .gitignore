@@ -1,1 +1,4 @@
 .agents/
+__pycache__/
+*.pyc
+banking_api.db
