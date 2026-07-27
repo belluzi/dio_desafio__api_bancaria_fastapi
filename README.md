@@ -22,6 +22,71 @@ O desafio propoe o uso do FastAPI para criar uma aplicacao backend moderna, efic
 - **Seguranca:** autenticacao com JWT para endpoints que exigirem usuario autenticado.
 - **Documentacao OpenAPI:** descricao de endpoints, parametros e modelos de dados.
 
+## Modelagem de entidades
+
+Para atender aos requisitos do desafio, a API precisa de tres conceitos principais:
+
+### Conta Bancaria
+
+Entidade que representa a conta corrente e concentra o saldo atual.
+
+| Campo | Descricao |
+| --- | --- |
+| `id` | Identificador interno da conta |
+| `agency` | Agencia bancaria |
+| `number` | Numero da conta |
+| `digit` | Digito da conta |
+| `owner_name` | Nome do titular |
+| `owner_document` | Documento do titular |
+| `balance_cents` | Saldo atual da conta armazenado em centavos |
+| `is_active` | Indica se a conta esta ativa |
+| `created_at` | Data de criacao |
+| `updated_at` | Data da ultima atualizacao |
+
+### Transacao
+
+Entidade que representa uma movimentacao bancaria vinculada a uma conta.
+
+| Campo | Descricao |
+| --- | --- |
+| `id` | Identificador interno da transacao |
+| `account_id` | Conta bancaria relacionada |
+| `type` | Tipo da transacao: `deposit` ou `withdraw` |
+| `amount_cents` | Valor da transacao armazenado em centavos, sempre positivo |
+| `description` | Descricao opcional da movimentacao |
+| `occurred_at` | Data em que a transacao ocorreu |
+| `balance_after_cents` | Saldo da conta apos a transacao, armazenado em centavos |
+| `created_at` | Data de registro da transacao |
+
+### Extrato
+
+O extrato nao precisa ser uma tabela propria no banco. Ele pode ser uma visao montada a partir da conta bancaria e de suas transacoes.
+
+| Campo | Descricao |
+| --- | --- |
+| `account_id` | Conta consultada |
+| `agency` | Agencia bancaria |
+| `account_number` | Numero da conta |
+| `account_digit` | Digito da conta |
+| `owner_name` | Nome do titular |
+| `current_balance_cents` | Saldo atual armazenado em centavos |
+| `issued_at` | Data de emissao do extrato |
+| `transactions` | Lista de transacoes realizadas |
+
+### Valor monetario
+
+Os valores monetarios sao representados no dominio pelo objeto de valor `Money`.
+
+Esse objeto centraliza as regras de dinheiro:
+
+- nao permite valores negativos;
+- garante no maximo duas casas decimais;
+- converte valores decimais para centavos;
+- realiza soma e subtracao sem usar `float`;
+- impede que uma subtracao gere saldo negativo.
+
+Na API, valores podem ser recebidos e exibidos como decimal, por exemplo `100.50`. Internamente, o armazenamento usa inteiros em centavos, por exemplo `10050`. Essa abordagem evita problemas de precisao e deixa as regras de dinheiro concentradas em um unico lugar.
+
 ## Estado atual do projeto
 
 O projeto esta em desenvolvimento. A estrutura inicial da API ja foi criada, com separacao em camadas para controllers, services, schemas, models e views.
