@@ -1,6 +1,6 @@
 from decimal import Decimal
 from pydantic import BaseModel, Field, field_validator
-from ..models.money import Money
+from ..domain.money import Money
 
 
 class AccountIn(BaseModel):

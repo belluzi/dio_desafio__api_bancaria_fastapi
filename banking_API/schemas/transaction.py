@@ -3,7 +3,7 @@ from decimal import Decimal
 from pydantic import AwareDatetime, BaseModel, Field, field_validator
 
 from ..models.transaction import TransactionType
-from ..models.money import Money
+from ..domain.money import Money
 
 
 class TransactionIn(BaseModel):
