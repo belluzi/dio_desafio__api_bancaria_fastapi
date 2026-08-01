@@ -1,6 +1,6 @@
 from decimal import Decimal
 from pydantic import AwareDatetime, BaseModel, computed_field
-from ..models.money import Money
+from ..domain.money import Money
 
 
 class AccountOut(BaseModel):

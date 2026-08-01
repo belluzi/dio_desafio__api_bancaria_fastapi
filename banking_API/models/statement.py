@@ -1,5 +1,4 @@
 import sqlalchemy as sa
-
 from .account import accounts
 from .transaction import transactions
 
